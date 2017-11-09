@@ -1,47 +1,37 @@
 import React, { Component } from 'react'
-import { addRecipe } from '../actions'
+import { connect } from 'react-redux'
+import { addRecipe, removeFromCalendar } from '../actions'
 
 class App extends Component {
-  state = {
-    calendar: null
-  }
-
-  componentDidMount(){
-    const { store } = this.props
-
-    store.subscribe(() => {
-      this.setState(() => ({
-        calendar: store.getState()
-      }))
-    })
-  }
-
-  submitFood = () => {
-    this.props.store.dispatch(addRecipe({
-      day: 'monday',
-      meal: 'breakfast',
-      recipe: {
-        label: this.input.value
-      }
-    }))
-
-    this.input.value = ''
-  }
-
   render() {
+    console.log('Props', this.props)
     return (
       <div>
-        <input type='text'
-          ref={(input) => this.input = input}
-          placeholder="Monday's breakfast"
-        />
-        <button onClick={this.submitFood}>Submit</button>
-        <pre>
-          Monday's Breackfast: {this.state.calendar && this.state.calendar.monday.breakfast}
-        </pre>
+        hello redux
       </div>
     )
   }
 }
 
-export default App
+function mapStateToProps (calendar) {
+  const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
+
+  return {
+    calendar: days.map(day => ({
+      day,
+      meals: Object.keys(calendar[day]).reduce((meals, meal) => {
+        meals[meal] = calendar[day][meal] ? calendar[day][meal] : null
+        return meals
+      },{})
+    }))
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    select: data => dispatch(addRecipe(data)),
+    remove: data => dispatch(removeFromCalendar(data))
+  }
+}
+
+export default connect(mapStateToProps)(App)
