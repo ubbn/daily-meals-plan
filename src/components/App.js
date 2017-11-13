@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+
 import { addRecipe, removeFromCalendar } from '../actions'
 
 class App extends Component {
@@ -13,14 +14,14 @@ class App extends Component {
   }
 }
 
-function mapStateToProps (calendar) {
+function mapStateToProps ({food, calendar}) {
   const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
 
   return {
     calendar: days.map(day => ({
       day,
       meals: Object.keys(calendar[day]).reduce((meals, meal) => {
-        meals[meal] = calendar[day][meal] ? calendar[day][meal] : null
+        meals[meal] = calendar[day][meal] ? food[calendar[day][meal]] : null
         return meals
       },{})
     }))
@@ -34,4 +35,7 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-export default connect(mapStateToProps)(App)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
