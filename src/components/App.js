@@ -62,7 +62,7 @@ class App extends Component {
     dinner && result.push(dinner)
 
     return result
-  }, []).reduce((ings, { ingredientLines }) => ings.concat(ingredientLines), [])
+  }, [])
 
   render() {
     const { calendar, remove, selectRecipe } = this.props
@@ -72,13 +72,14 @@ class App extends Component {
     return (
       <div className='container'>
         <div className='nav'>
-          <h1 className='header'>UdaciMeals</h1>
+          <h1 className='header'>Daily meals plan</h1>
           <button
             className='shopping-list'
             onClick={this.openIngredientsModal}>
               Shopping List
           </button>
         </div>
+        <p>Choose your favorite meals for each day, and see all their necessary ingredients to shop</p>  
 
         <ul className='meal-types'>
           {mealOrder.map((mealType) => (

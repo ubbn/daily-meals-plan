@@ -6,13 +6,15 @@ export default function ShoppingList ({ list }) {
       <h3 className='subheader'>
         Your Shopping List
       </h3>
-      <ul>
-        {list.map((item) => (
-          <li key={item}>
-            {item}
-          </li>
-        ))}
-      </ul>
+      {list instanceof Array && list.length == 0 ? 'Choose meals first'
+        : list.map((meal) => (
+        <div>
+          <h4>{meal.label}: ingredients</h4>
+          <ul>
+            {meal.ingredientLines.map(ing => <li key={ing}>{ing}</li>)}
+          </ul>
+        </div>
+      ))}
     </div>
   )
 }
